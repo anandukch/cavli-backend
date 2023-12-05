@@ -1,15 +1,16 @@
-const FileModel = require("../models/file");
-const AWSUtils = require("../utils/s3");
-
-// const awsUtils = new AWSUtils();
+import FileModel from "../models/file.js";
+import AWSUtils from "../utils/s3.js";
 
 const uploadFile = async (req, res) => {
   try {
     const file = req.file;
-
     const result = await AWSUtils.uploadFile(file);
-    // const result = await AWSUtils.uploadFile(file);
-    // console.log(await AWSUtils.listObjects());
+    const fileObj = new FileModel({
+      name: file.originalname,
+      key: result.Key,
+      url: result.Location,
+    });
+    await fileObj.save();
     res.status(200).json({ result });
   } catch (error) {
     console.log(error);
@@ -39,8 +40,4 @@ const getFile = async (req, res) => {
   }
 };
 
-module.exports = {
-  uploadFile,
-  listAllFiles,
-  getFile,
-};
+export { uploadFile, listAllFiles, getFile };

@@ -1,22 +1,24 @@
-const express = require("express");
+import express, { json } from "express";
 const app = express();
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const { config } = require("dotenv");
+import cors from "cors";
+import pkg from 'body-parser';
+const { urlencoded } = pkg;
+import { config } from "dotenv";
 config();
-const connectDB = require("./config/db");
+import connectDB from "./config/db.js";
+import routes from "./routes/index.js";
 
 connectDB();
 app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
 
-app.use("/api", require("./routes"));
+app.use("/api", routes);
 
 app.listen(3000, () => {
   console.log("Server is running on port http://localhost:3000");
