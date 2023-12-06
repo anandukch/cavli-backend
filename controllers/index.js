@@ -76,8 +76,7 @@ const getFile = async (req, res) => {
     const fileObj = await awsUtils.getObject(req.params.fileName);
     const result = JSON.parse(new Buffer.from(fileObj.Body).toString("utf8"));
     return res.status(200).json({
-      status: "success",
-      data: result,
+      result,
     });
   } catch (error) {
     console.log(error);
