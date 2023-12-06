@@ -1,10 +1,10 @@
 import S3 from "aws-sdk/clients/s3.js";
 import { extname } from "path";
 const s3 = new S3({
-  accessKeyId:"AKIAYZDQ3KTAOSRNBQVS",
-  secretAccessKey: "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",
+  accessKeyId:process.env.AWS_ACCESS_KEY || "AKIAYZDQ3KTAOSRNBQVS",
+  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY ||  "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",
 });
-const bucket = "cavli-test";
+const bucket = process.env.BUCKET_NAME || "cavli-test";
 class AWSUtils {
   // static setCredentials(awsConfig) {
   //   s3.config.update({
