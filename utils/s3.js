@@ -1,9 +1,8 @@
 import S3 from "aws-sdk/clients/s3.js";
 import { extname } from "path";
 const s3 = new S3({
-  accessKeyId:"AKIAV77ZQIRG4XPQIHOU",
-  secretAccessKey: "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",
-  region: "ap-south-1"
+  accessKeyId:"AKIAYZDQ3KTAOSRNBQVS",
+  secretAccessKey: "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",
 });
 const bucket = "cavli-test";
 class AWSUtils {
