@@ -4,7 +4,6 @@ import AWSUtils from "../utils/s3.js";
 
 const uploadFile = async (req, res) => {
   try {
-
     // const user = req.user;
     // if(user){
     //   const awsConfig = await AwsCredModel.findById(user._id);
@@ -15,12 +14,12 @@ const uploadFile = async (req, res) => {
     // }
     const file = req.file;
     const result = await AWSUtils.uploadFile(file);
-    // const fileObj = new FileModel({
-    //   fileName: result.Key,
-    //   url: result.Location,
-    // });
-    // await fileObj.save();
-    res.status(200).json({ result });
+    const fileObj = new FileModel({
+      fileName: result.Key,
+      url: result.Location,
+    });
+    await fileObj.save();
+    res.status(200).json({ result: fileObj });
   } catch (error) {
     console.log(error);
     res.status(400).json({ error });

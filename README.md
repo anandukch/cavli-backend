@@ -1,16 +1,16 @@
-# Task Tracker
+# Cavli Backend
 
-Building a server that can keep track of tasks. 
+Backend code base for uploading file and sending file data in json format
 
 
 ## Installation
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/anandukch/Hotel-Visitor-Analytics
+   git clone https://github.com/anandukch/cavli-backend
 2. **Install Dependencies:**
    ```bash
-   cd Hotel-Visitor-Analytics
+   cd cavli-backend
    npm install
 3. **Run the App Using docker:**
    ```bash
@@ -18,15 +18,15 @@ Building a server that can keep track of tasks.
    ```
 4. **Run the App Using script:**
    ```bash
-   ./run.sh
+   npm run dev
    ```
 ## Tech Stack
-* **`Fastapi`**
+* **`Express`**
 * **`Mongodb`**
-* **`Pytest`** 
+* **`AWS S3`** 
 
 ## For api Documentation 
-[http://localhost:5000/docs](http://localhost:5000/docs)
+[http://localhost:5000/api-docs](http://localhost:5000/api-docs)
 
 
 ## Contributing
