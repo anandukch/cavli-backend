@@ -5,18 +5,22 @@ import { getTokenData } from "../utils/token.js";
 
 const uploadFile = async (req, res) => {
   try {
-    // const tokenObj = getTokenData(req);
-    // if (tokenObj) {
-    //   const refId = tokenObj._id;
-    //   const awsConfig = await AwsCredModel.findById(refId);
-    //   AWSUtils.setCredentials(awsConfig);
-    // }
+    const tokenObj = getTokenData(req);
+    let refId = null;
+    console.log(tokenObj);
+    let awsUtils = new AWSUtils();
+    if (tokenObj) {
+      refId = tokenObj._id;
+      const awsConfig = await AwsCredModel.findById(refId);
+      awsUtils.loadConfig(awsConfig);
+    }
     const file = req.file;
-    const result = await AWSUtils.uploadFile(file);
+    const result = await awsUtils.uploadFile(file);
+    // const result = await AWSUtils.uploadFile(file);
     const fileObj = new FileModel({
       fileName: result.Key,
       url: result.Location,
-      // refId: refId ,
+      refId: refId,
     });
     await fileObj.save();
     res.status(200).json({
@@ -59,7 +63,15 @@ const listAllFiles = async (req, res) => {
 
 const getFile = async (req, res) => {
   try {
-    const fileObj = await AWSUtils.getObject(req.params.id);
+    const tokenObj = getTokenData(req);
+    let refId = null;
+    let awsUtils = new AWSUtils();
+    if (tokenObj) {
+      refId = tokenObj._id;
+      const awsConfig = await AwsCredModel.findById(refId);
+      awsUtils.loadConfig(awsConfig);
+    }
+    const fileObj = await awsUtils.getObject(req.params.id);
     const result = JSON.parse(new Buffer.from(fileObj.Body).toString("utf8"));
     return res.status(200).json({ result });
   } catch (error) {

@@ -1,59 +1,32 @@
 import S3 from "aws-sdk/clients/s3.js";
 import { extname } from "path";
-let s3 = new S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION || "ap-south-1",
-  apiVersion: "2006-03-01",
-});
-let bucket = process.env.BUCKET_NAME || "cavli-test";
+
 class AWSUtils {
-  static setCredentials(awsConfig) {
-    s3.config.update({
+  async loadConfig(awsConfig) {
+    this.s3 = new S3({
       accessKeyId: awsConfig.accessKey,
       secretAccessKey: awsConfig.secretAccessKey,
       region: awsConfig.region || "ap-south-1",
+      apiVersion: "2006-03-01",
     });
-    bucket = awsConfig.bucketName;
+    this.bucket = awsConfig.bucketName;
   }
 
-  static async uploadFile(file) {
+  async uploadFile(file) {
+    console.log("bucket", this.bucket);
     const params = {
-      Bucket: bucket,
+      Bucket: this.bucket,
       Key: Date.now().toString() + extname(file.originalname),
       Body: file.buffer,
     };
-    return await s3.upload(params).promise();
+    return await this.s3.upload(params).promise();
   }
-
-  static async deleteFile(key) {
+  async getObject(key) {
     const params = {
-      Bucket: bucket,
+      Bucket: this.bucket,
       Key: key,
     };
-    return await s3.deleteObject(params).promise();
-  }
-
-  static async deleteBucket() {
-    const params = {
-      Bucket: bucket,
-    };
-    return await s3.deleteBucket(params).promise();
-  }
-
-  static async listObjects() {
-    const params = {
-      Bucket: bucket,
-    };
-    return await s3.listObjects(params).promise();
-  }
-
-  static async getObject(key) {
-    const params = {
-      Bucket: bucket,
-      Key: key,
-    };
-    return await s3.getObject(params).promise();
+    return await this.s3.getObject(params).promise();
   }
 }
 
