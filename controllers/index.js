@@ -16,7 +16,7 @@ const uploadFile = async (req, res) => {
     const file = req.file;
     const result = await AWSUtils.uploadFile(file);
     const fileObj = new FileModel({
-      fileName: file.Key,
+      fileName: result.Key,
       // key: result.Key,
       url: result.Location,
     });
