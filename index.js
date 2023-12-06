@@ -7,6 +7,8 @@ import { config } from "dotenv";
 config();
 import connectDB from "./config/db.js";
 import routes from "./routes/index.js";
+import swaggerUi from 'swagger-ui-express';
+import swaggerOutput from "./swagger-output.json" assert { type: "json" };
 
 connectDB();
 app.use(cors());
@@ -17,9 +19,9 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 app.use("/api", routes);
 
 app.listen(5000, () => {
-  console.log("Server is running on port http://localhost:3000");
+  console.log("Server is running on port http://localhost:5000");
 });
