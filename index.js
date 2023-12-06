@@ -8,7 +8,10 @@ config();
 import connectDB from "./config/db.js";
 import routes from "./routes/index.js";
 import swaggerUi from 'swagger-ui-express';
-import swaggerOutput from "./swagger-output.json" assert { type: "json" };
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const swaggerOutput = require("./swagger-output.json");
+// import swaggerOutput from "./swagger-output.json" assert { type: "json" };
 
 connectDB();
 app.use(cors());
