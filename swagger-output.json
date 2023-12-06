@@ -9,6 +9,48 @@
   "basePath": "/",
   "schemes": ["http"],
   "paths": {
+    "/login": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "accessKey",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "secretAccessKey",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "bucketName",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "region",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/upload": {
       "post": {
         "description": "",
@@ -73,52 +115,9 @@
           }
         }
       }
-    },
-    "/login": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "accessKey",
-            "in": "formData",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "secretAccessKey",
-            "in": "formData",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "bucketName",
-            "in": "formData",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "region",
-            "in": "formData",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/LoginResponse"
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
     }
   },
   "definitions": {
-   
     "LoginResponse": {
       "type": "object",
       "properties": {

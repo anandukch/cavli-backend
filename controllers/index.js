@@ -1,19 +1,22 @@
 import FileModel from "../models/file.js";
 import AwsCredModel from "../models/awsCred.js";
 import AWSUtils from "../utils/s3.js";
-import { getTokenData } from "../utils/token.js";
+// import { getTokenData } from "../utils/token.js";
 
+let awsUtils = new AWSUtils();
 const uploadFile = async (req, res) => {
   try {
-    const tokenObj = getTokenData(req);
-    let refId = null;
-    console.log(tokenObj);
-    let awsUtils = new AWSUtils();
-    if (tokenObj) {
-      refId = tokenObj._id;
-      const awsConfig = await AwsCredModel.findById(refId);
-      awsUtils.loadConfig(awsConfig);
-    }
+    // const tokenObj = getTokenData(req);
+    // let refId = null;
+
+    // if (tokenObj) {
+    //   refId = tokenObj._id;
+    //   const awsConfig = await AwsCredModel.findById(refId);
+    //   awsUtils.loadConfig(awsConfig);
+    // }
+    const refId = req.user;
+    const awsConfig = await AwsCredModel.findById(refId);
+    awsUtils.loadConfig(awsConfig);
     const file = req.file;
     const result = await awsUtils.uploadFile(file);
     const fileObj = new FileModel({
@@ -41,17 +44,11 @@ const uploadFile = async (req, res) => {
 
 const listAllFiles = async (req, res) => {
   try {
-    const tokenObj = getTokenData(req);
-    let result = await FileModel.find({});
-    if (tokenObj) {
-      const refId = tokenObj._id;
-      const awsConfig = await AwsCredModel.findById(refId);
-      if (awsConfig) {
-        result = await FileModel.find({
-          refId: refId,
-        });
-      }
-    }
+    const refId = req.user;
+
+    const result = await FileModel.find({
+      refId: refId,
+    });
 
     res.status(200).json({
       status: "success",
@@ -71,14 +68,11 @@ const listAllFiles = async (req, res) => {
 
 const getFile = async (req, res) => {
   try {
-    const tokenObj = getTokenData(req);
-    let refId = null;
-    let awsUtils = new AWSUtils();
-    if (tokenObj) {
-      refId = tokenObj._id;
-      const awsConfig = await AwsCredModel.findById(refId);
-      awsUtils.loadConfig(awsConfig);
-    }
+    let refId = req.user;
+
+    const awsConfig = await AwsCredModel.findById(refId);
+    awsUtils.loadConfig(awsConfig);
+
     const fileObj = await awsUtils.getObject(req.params.fileName);
     const result = JSON.parse(new Buffer.from(fileObj.Body).toString("utf8"));
     return res.status(200).json({
