@@ -26,7 +26,7 @@ Backend code base for uploading file and sending file data in json format
 * **`AWS S3`** 
 
 ## For api Documentation 
-[http://localhost:5000/api-docs](http://localhost:5000/api-docs)
+[https://cavli-api.onrender.com/api-docs/](https://cavli-api.onrender.com/api-docs/)
 
 
 ## Contributing
