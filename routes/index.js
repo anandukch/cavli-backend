@@ -13,5 +13,5 @@ router.post("/upload", upload.single("file"), uploadFile);
 router.get("/files", listAllFiles);
 router.get("/:id", getFile)
 router.post("/login",addAwsConfig)
-
+  
 export default router;

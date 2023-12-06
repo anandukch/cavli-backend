@@ -2,7 +2,8 @@ import S3 from "aws-sdk/clients/s3.js";
 import { extname } from "path";
 const s3 = new S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: "ap-south-1"
 });
 const bucket = "cavli-test";
 class AWSUtils {
