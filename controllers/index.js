@@ -16,7 +16,7 @@ const uploadFile = async (req, res) => {
     const fileObj = new FileModel({
       fileName: result.Key,
       url: result.Location,
-      refId: refId,
+      // refId: refId ,
     });
     await fileObj.save();
     res.status(200).json({
