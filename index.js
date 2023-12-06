@@ -11,7 +11,6 @@ import swaggerUi from 'swagger-ui-express';
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const swaggerOutput = require("./swagger-output.json");
-// import swaggerOutput from "./swagger-output.json" assert { type: "json" };
 
 connectDB();
 app.use(cors());

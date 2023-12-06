@@ -7,9 +7,7 @@
   },
   "host": "localhost:5000",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/upload": {
       "post": {
@@ -24,7 +22,10 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/FileResposne"
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -35,14 +36,14 @@
     "/files": {
       "get": {
         "description": "",
-        
+
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/File"
+                "$ref": "#/definitions/FileResposne"
               }
             }
           },
@@ -52,7 +53,7 @@
         }
       }
     },
-    "/{id}": {
+    "/files/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -65,9 +66,48 @@
         ],
         "responses": {
           "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "accessKey",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "secretAccessKey",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "bucketName",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "region",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/File"
+              "$ref": "#/definitions/LoginResponse"
             }
           },
           "400": {
@@ -78,19 +118,22 @@
     }
   },
   "definitions": {
-    "File": {
+   
+    "LoginResponse": {
       "type": "object",
       "properties": {
-        "id": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "FileResposne": {
+      "type": "object",
+      "properties": {
+        "fileName": {
           "type": "string"
         },
-        "name": {
-          "type": "string"
-        },
-        "size": {
-          "type": "integer"
-        },
-        "type": {
+        "url": {
           "type": "string"
         },
         "createdAt": {

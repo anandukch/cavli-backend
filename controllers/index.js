@@ -16,7 +16,6 @@ const uploadFile = async (req, res) => {
     }
     const file = req.file;
     const result = await awsUtils.uploadFile(file);
-    // const result = await AWSUtils.uploadFile(file);
     const fileObj = new FileModel({
       fileName: result.Key,
       url: result.Location,
@@ -54,7 +53,16 @@ const listAllFiles = async (req, res) => {
       }
     }
 
-    res.status(200).json({ result });
+    res.status(200).json({
+      status: "success",
+      data: result.map((file) => {
+        return {
+          fileName: file.fileName,
+          url: file.url,
+          createdAt: file.createdAt,
+        };
+      }),
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({ error });
@@ -71,9 +79,12 @@ const getFile = async (req, res) => {
       const awsConfig = await AwsCredModel.findById(refId);
       awsUtils.loadConfig(awsConfig);
     }
-    const fileObj = await awsUtils.getObject(req.params.id);
+    const fileObj = await awsUtils.getObject(req.params.fileName);
     const result = JSON.parse(new Buffer.from(fileObj.Body).toString("utf8"));
-    return res.status(200).json({ result });
+    return res.status(200).json({
+      status: "success",
+      data: result,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({ error });

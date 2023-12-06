@@ -11,7 +11,7 @@ const upload = multer({ storage: storage });
 
 router.post("/upload", upload.single("file"), uploadFile);
 router.get("/files", listAllFiles);
-router.get("/:id", getFile)
+router.get("/files/:fileName", getFile)
 router.post("/login",addAwsConfig)
   
 export default router;
