@@ -14,6 +14,9 @@ const FileSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    refId: {
+      type: String,
+    },
   },
   {
     timestamps: true,

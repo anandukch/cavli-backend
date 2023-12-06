@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
 const AwsCredSchema = new mongoose.Schema({
   accessKey: {

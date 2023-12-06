@@ -1,19 +1,21 @@
 import S3 from "aws-sdk/clients/s3.js";
 import { extname } from "path";
-const s3 = new S3({
-  accessKeyId:process.env.AWS_ACCESS_KEY || "AKIAYZDQ3KTAOSRNBQVS",
-  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY ||  "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",
+let s3 = new S3({
+  accessKeyId:process.env.AWS_ACCESS_KEY ,
+  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY ,
+  region:process.env.AWS_REGION || "ap-south-1",
 });
-const bucket = process.env.BUCKET_NAME || "cavli-test";
+let bucket = process.env.BUCKET_NAME || "cavli-test";
 class AWSUtils {
-  // static setCredentials(awsConfig) {
-  //   s3.config.update({
-  //     accessKeyId: awsConfig.accessKey,
-  //     secretAccessKey: awsConfig.secretAccessKey,
-  //     region: awsConfig.region || "ap-south-1",
-  //   });
-  //   bucket = awsConfig.bucketName;
-  // }
+  static setCredentials(awsConfig) {
+    s3.config.update({
+      accessKeyId: awsConfig.accessKey,
+      secretAccessKey: awsConfig.secretAccessKey,
+      region: awsConfig.region || "ap-south-1",
+    });
+    bucket = awsConfig.bucketName;
+  }
+  
   static async uploadFile(file) {
     // console.log(process.env.AWS_ACCESS_KEY,process.env.AWS_SECRET_ACCESS_KEY);
     const params = {

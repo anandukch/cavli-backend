@@ -1,15 +1,14 @@
 import FileModel from "../models/file.js";
 import AwsCredModel from "../models/awsCred.js";
 import AWSUtils from "../utils/s3.js";
+import { getTokenData } from "../utils/token.js";
 
 const uploadFile = async (req, res) => {
   try {
-    // const user = req.user;
-    // if(user){
-    //   const awsConfig = await AwsCredModel.findById(user._id);
-    //   if(!awsConfig){
-    //     return res.status(400).json({ error: "Please provide AWS config" });
-    //   }
+    // const tokenObj = getTokenData(req);
+    // if (tokenObj) {
+    //   const refId = tokenObj._id;
+    //   const awsConfig = await AwsCredModel.findById(refId);
     //   AWSUtils.setCredentials(awsConfig);
     // }
     const file = req.file;
@@ -17,9 +16,17 @@ const uploadFile = async (req, res) => {
     const fileObj = new FileModel({
       fileName: result.Key,
       url: result.Location,
+      refId: refId,
     });
     await fileObj.save();
-    res.status(200).json({ result: fileObj });
+    res.status(200).json({
+      status: "success",
+      data: {
+        fileName: fileObj.fileName,
+        url: fileObj.url,
+        createdAt: fileObj.createdAt,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({ error });
@@ -28,7 +35,18 @@ const uploadFile = async (req, res) => {
 
 const listAllFiles = async (req, res) => {
   try {
-    const result = await FileModel.find();
+    const tokenObj = getTokenData(req);
+    let result = await FileModel.find({});
+    if (tokenObj) {
+      const refId = tokenObj._id;
+      const awsConfig = await AwsCredModel.findById(refId);
+      if (awsConfig) {
+        result = await FileModel.find({
+          refId: refId,
+        });
+      }
+    }
+
     res.status(200).json({ result });
   } catch (error) {
     console.log(error);
@@ -58,7 +76,7 @@ const addAwsConfig = async (req, res) => {
       return res.status(400).json({ error: "Please provide all the details" });
     }
 
-    const awsConfigObj = new AwsCredModel.findOne({
+    const awsConfigObj = await AwsCredModel.findOne({
       accessKey: awsConfig.accessKey,
       secretAccessKey: awsConfig.secretAccessKey,
       bucketName: awsConfig.bucketName,
@@ -73,6 +91,7 @@ const addAwsConfig = async (req, res) => {
     const token = await newAwsConfigObj.generateAuthToken();
     res.status(200).json({ token });
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error });
   }
 };
