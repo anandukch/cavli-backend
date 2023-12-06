@@ -1,8 +1,8 @@
 import S3 from "aws-sdk/clients/s3.js";
 import { extname } from "path";
 const s3 = new S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId:"AKIAV77ZQIRG4XPQIHOU",
+  secretAccessKey: "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",
   region: "ap-south-1"
 });
 const bucket = "cavli-test";
@@ -16,7 +16,7 @@ class AWSUtils {
   //   bucket = awsConfig.bucketName;
   // }
   static async uploadFile(file) {
-    console.log(process.env.AWS_ACCESS_KEY,process.env.AWS_SECRET_ACCESS_KEY);
+    // console.log(process.env.AWS_ACCESS_KEY,process.env.AWS_SECRET_ACCESS_KEY);
     const params = {
       Bucket: bucket,
       Key: Date.now().toString() + extname(file.originalname),
