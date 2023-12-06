@@ -95,12 +95,12 @@
         }
       }
     },
-    "/files/{id}": {
+    "/files/{fileName}": {
       "get": {
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "fileName",
             "in": "path",
             "required": true,
             "type": "string"
