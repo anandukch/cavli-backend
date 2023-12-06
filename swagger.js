@@ -2,8 +2,8 @@ import swaggerAutogen from 'swagger-autogen';
 
 const doc = {
   info: {
-    title: 'My API',
-    description: 'Description'
+    title: 'Cavli API',
+    description: 'API Documentation for Cavli Wireless',
   },
   host: 'localhost:5000'
 };
