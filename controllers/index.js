@@ -29,7 +29,10 @@ const uploadFile = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ error });
+    res.status(400).json({
+      status: "failed",
+      error: error.message,
+    });
   }
 };
 

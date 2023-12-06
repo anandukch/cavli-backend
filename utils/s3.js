@@ -1,9 +1,10 @@
 import S3 from "aws-sdk/clients/s3.js";
 import { extname } from "path";
 let s3 = new S3({
-  accessKeyId:process.env.AWS_ACCESS_KEY ,
-  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY ,
-  region:process.env.AWS_REGION || "ap-south-1",
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION || "ap-south-1",
+  apiVersion: "2006-03-01",
 });
 let bucket = process.env.BUCKET_NAME || "cavli-test";
 class AWSUtils {
@@ -15,9 +16,8 @@ class AWSUtils {
     });
     bucket = awsConfig.bucketName;
   }
-  
+
   static async uploadFile(file) {
-    // console.log(process.env.AWS_ACCESS_KEY,process.env.AWS_SECRET_ACCESS_KEY);
     const params = {
       Bucket: bucket,
       Key: Date.now().toString() + extname(file.originalname),
@@ -56,6 +56,5 @@ class AWSUtils {
     return await s3.getObject(params).promise();
   }
 }
-
 
 export default AWSUtils;
